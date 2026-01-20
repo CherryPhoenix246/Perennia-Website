@@ -215,6 +215,9 @@ const ProductsManagement = () => {
               <DialogTitle className="text-white font-serif">
                 {editingProduct ? 'Edit Product' : 'Add New Product'}
               </DialogTitle>
+              <DialogDescription className="text-[#A3A3A3]">
+                {editingProduct ? 'Update the product details below.' : 'Fill in the product details below.'}
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
               <Input
