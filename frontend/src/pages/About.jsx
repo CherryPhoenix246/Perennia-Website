@@ -2,8 +2,12 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Sparkles, Heart, Leaf } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useSiteSettings } from '@/context/SiteSettingsContext';
 
 const About = () => {
+  const { settings } = useSiteSettings();
+  const aboutSection = settings.about_section || {};
+
   const values = [
     {
       icon: Sparkles,
@@ -22,6 +26,9 @@ const About = () => {
     }
   ];
 
+  // Split content by newlines for paragraphs
+  const contentParagraphs = (aboutSection.content || '').split('\n\n').filter(Boolean);
+
   return (
     <div className="min-h-screen pt-20" data-testid="about-page">
       {/* Hero */}
@@ -35,13 +42,11 @@ const About = () => {
           >
             <span className="text-[#D4AF37] text-xs uppercase tracking-[0.3em] mb-4 block">Our Story</span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-tight mb-6">
-              Crafting Beauty,<br />
+              {aboutSection.title || 'Crafting Beauty,'}<br />
               <span className="text-[#40E0D0]">One Piece at a Time</span>
             </h1>
             <p className="text-[#A3A3A3] text-lg leading-relaxed">
-              Perennia was born from a deep passion for artistry and the enchanting 
-              beauty of Barbados. What started as a personal creative journey has 
-              blossomed into a celebration of Caribbean craftsmanship.
+              {contentParagraphs[0] || 'Perennia was born from a deep passion for artistry and the enchanting beauty of Barbados. What started as a personal creative journey has blossomed into a celebration of Caribbean craftsmanship.'}
             </p>
           </motion.div>
         </div>
@@ -59,7 +64,7 @@ const About = () => {
             >
               <div className="aspect-[4/5] bg-[#1A1A1A] overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1759794108525-94ff060da692?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODh8MHwxfHNlYXJjaHwyfHxsdXh1cnklMjBoYW5kbWFkZSUyMHNvYXAlMjBkYXJrJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3Njg5NDMzNDJ8MA&ixlib=rb-4.1.0&q=85"
+                  src={aboutSection.image_url || 'https://images.unsplash.com/photo-1759794108525-94ff060da692?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODh8MHwxfHNlYXJjaHwyfHxsdXh1cnklMjBoYW5kbWFkZSUyMHNvYXAlMjBkYXJrJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3Njg5NDMzNDJ8MA&ixlib=rb-4.1.0&q=85'}
                   alt="Perennia artisan at work"
                   className="w-full h-full object-cover"
                 />
@@ -76,20 +81,29 @@ const About = () => {
               <h2 className="text-3xl md:text-4xl font-serif text-white">
                 The Heart Behind<br />Every Creation
               </h2>
-              <p className="text-[#A3A3A3] leading-relaxed">
-                Based in the vibrant island of Barbados, Perennia represents more than 
-                just handcrafted goods—it's a testament to the rich artistic heritage 
-                of the Caribbean. Each resin piece captures the turquoise waters of 
-                our beaches, each candle carries the warmth of our tropical sunsets.
-              </p>
-              <p className="text-[#A3A3A3] leading-relaxed">
-                Our body care line is crafted with natural ingredients, drawing from 
-                the healing traditions that have been passed down through generations. 
-                We believe that luxury should be accessible, sustainable, and deeply 
-                personal.
-              </p>
+              {contentParagraphs.slice(1).map((paragraph, index) => (
+                <p key={index} className="text-[#A3A3A3] leading-relaxed">
+                  {paragraph}
+                </p>
+              ))}
+              {contentParagraphs.length <= 1 && (
+                <>
+                  <p className="text-[#A3A3A3] leading-relaxed">
+                    Based in the vibrant island of Barbados, Perennia represents more than 
+                    just handcrafted goods—it's a testament to the rich artistic heritage 
+                    of the Caribbean. Each resin piece captures the turquoise waters of 
+                    our beaches, each candle carries the warmth of our tropical sunsets.
+                  </p>
+                  <p className="text-[#A3A3A3] leading-relaxed">
+                    Our body care line is crafted with natural ingredients, drawing from 
+                    the healing traditions that have been passed down through generations. 
+                    We believe that luxury should be accessible, sustainable, and deeply 
+                    personal.
+                  </p>
+                </>
+              )}
               <p className="font-accent text-xl text-[#D4AF37] italic">
-                "Every piece tells a story of Caribbean beauty and timeless elegance."
+                "{aboutSection.quote || 'Every piece tells a story of Caribbean beauty and timeless elegance.'}"
               </p>
             </motion.div>
           </div>

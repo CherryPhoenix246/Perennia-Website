@@ -5,11 +5,15 @@ import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useSiteSettings } from '@/context/SiteSettingsContext';
 import { toast } from 'sonner';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const Contact = () => {
+  const { settings } = useSiteSettings();
+  const contactInfo = settings.contact_info || {};
+  
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -66,7 +70,7 @@ const Contact = () => {
               <div>
                 <h2 className="text-2xl font-serif text-white mb-6">Contact Information</h2>
                 <p className="text-[#A3A3A3] leading-relaxed">
-                  Based in beautiful Barbados, Perennia creates handcrafted luxury items 
+                  Based in beautiful Barbados, {settings.business_name} creates handcrafted luxury items 
                   with Caribbean love. Reach out for custom orders, wholesale inquiries, 
                   or just to say hello!
                 </p>
@@ -80,7 +84,7 @@ const Contact = () => {
                   <div>
                     <h3 className="text-white font-medium mb-1">Visit Us</h3>
                     <p className="text-[#A3A3A3] text-sm">
-                      Bridgetown, Barbados<br />
+                      {contactInfo.address || 'Bridgetown, Barbados'}<br />
                       Caribbean
                     </p>
                   </div>
@@ -92,7 +96,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="text-white font-medium mb-1">Call Us</h3>
-                    <p className="text-[#A3A3A3] text-sm">+1 (246) 123-4567</p>
+                    <p className="text-[#A3A3A3] text-sm">{contactInfo.phone || '+1 (246) 123-4567'}</p>
                   </div>
                 </div>
 
@@ -102,7 +106,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="text-white font-medium mb-1">Email Us</h3>
-                    <p className="text-[#A3A3A3] text-sm">info@perennia.bb</p>
+                    <p className="text-[#A3A3A3] text-sm">{contactInfo.email || 'info@perennia.bb'}</p>
                   </div>
                 </div>
               </div>
