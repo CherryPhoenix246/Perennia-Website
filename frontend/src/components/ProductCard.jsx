@@ -2,10 +2,12 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Star, ShoppingBag } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useCurrency } from '@/context/CurrencyContext';
 import { toast } from 'sonner';
 
 const ProductCard = ({ product, index = 0 }) => {
   const { addItem } = useCart();
+  const { formatPrice } = useCurrency();
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -77,8 +79,9 @@ const ProductCard = ({ product, index = 0 }) => {
 
           {/* Price */}
           <div className="flex items-baseline space-x-2">
-            <span className="text-[var(--brand-gold)] font-serif">${product.price_bbd.toFixed(2)} BBD</span>
-            <span className="text-xs text-[var(--text-secondary)]">${product.price_usd.toFixed(2)} USD</span>
+            <span className="text-[var(--brand-gold)] font-serif">
+              {formatPrice(product.price_bbd, product.price_usd)}
+            </span>
           </div>
         </div>
       </Link>
