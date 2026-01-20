@@ -725,7 +725,26 @@ async def get_site_settings():
                 "quote": "Every piece tells a story of Caribbean beauty and timeless elegance.",
                 "image_url": "https://images.unsplash.com/photo-1759794108525-94ff060da692?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODh8MHwxfHNlYXJjaHwyfHxsdXh1cnklMjBoYW5kbWFkZSUyMHNvYXAlMjBkYXJrJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3Njg5NDMzNDJ8MA&ixlib=rb-4.1.0&q=85"
             },
-            "footer_text": "Handcrafted luxury from Barbados. Each piece tells a story of Caribbean artistry and timeless elegance."
+            "footer_text": "Handcrafted luxury from Barbados. Each piece tells a story of Caribbean artistry and timeless elegance.",
+            "theme_colors": {
+                "primary": "#D4AF37",
+                "secondary": "#40E0D0",
+                "accent": "#4A0E5C",
+                "background": "#050505",
+                "surface": "#0F0F0F",
+                "text_primary": "#F5F5F5",
+                "text_secondary": "#A3A3A3"
+            },
+            "layout_settings": {
+                "show_hero": True,
+                "show_categories": True,
+                "show_featured": True,
+                "show_about_snippet": True,
+                "show_newsletter": True,
+                "navbar_style": "glass",
+                "footer_style": "full",
+                "product_card_style": "default"
+            }
         }
         await db.site_settings.insert_one(default_settings)
         return default_settings
@@ -737,14 +756,10 @@ async def update_site_settings(settings: SiteSettingsUpdate, admin: dict = Depen
     update_data = {k: v for k, v in settings.model_dump().items() if v is not None}
     
     # Handle nested objects
-    if "social_links" in update_data and update_data["social_links"]:
-        update_data["social_links"] = update_data["social_links"].model_dump() if hasattr(update_data["social_links"], 'model_dump') else update_data["social_links"]
-    if "contact_info" in update_data and update_data["contact_info"]:
-        update_data["contact_info"] = update_data["contact_info"].model_dump() if hasattr(update_data["contact_info"], 'model_dump') else update_data["contact_info"]
-    if "hero_section" in update_data and update_data["hero_section"]:
-        update_data["hero_section"] = update_data["hero_section"].model_dump() if hasattr(update_data["hero_section"], 'model_dump') else update_data["hero_section"]
-    if "about_section" in update_data and update_data["about_section"]:
-        update_data["about_section"] = update_data["about_section"].model_dump() if hasattr(update_data["about_section"], 'model_dump') else update_data["about_section"]
+    nested_fields = ["social_links", "contact_info", "hero_section", "about_section", "theme_colors", "layout_settings"]
+    for field in nested_fields:
+        if field in update_data and update_data[field]:
+            update_data[field] = update_data[field].model_dump() if hasattr(update_data[field], 'model_dump') else update_data[field]
     
     if not update_data:
         raise HTTPException(status_code=400, detail="No data to update")
