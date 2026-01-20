@@ -43,10 +43,10 @@ const Navbar = () => {
                 <img 
                   src={settings.logo_url} 
                   alt={settings.business_name} 
-                  className="h-14 w-auto mix-blend-lighten"
+                  className="h-14 w-auto"
                 />
               ) : (
-                <span className="text-2xl font-serif text-[#D4AF37] tracking-wider">
+                <span className="text-2xl font-serif text-[var(--brand-gold)] tracking-wider">
                   {settings.business_name}
                 </span>
               )}
@@ -58,7 +58,7 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.href}
-                  className="text-xs uppercase tracking-widest text-white/80 hover:text-[#D4AF37] transition-colors duration-300"
+                  className="text-xs uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--brand-gold)] transition-colors duration-300"
                   data-testid={`nav-${link.name.toLowerCase().replace(' ', '-')}`}
                 >
                   {link.name}
@@ -71,22 +71,22 @@ const Navbar = () => {
               {/* Account */}
               {isAuthenticated ? (
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center space-x-1 text-white/80 hover:text-[#D4AF37] transition-colors">
+                  <DropdownMenuTrigger className="flex items-center space-x-1 text-[var(--text-secondary)] hover:text-[var(--brand-gold)] transition-colors">
                     <User size={20} />
                     <span className="hidden md:inline text-xs uppercase tracking-widest">
                       {user?.first_name}
                     </span>
                     <ChevronDown size={14} />
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="bg-[#0F0F0F] border-white/10">
+                  <DropdownMenuContent className="bg-[var(--bg-paper)] border-white/10">
                     <DropdownMenuItem asChild>
-                      <Link to="/account" className="text-white hover:text-[#D4AF37]" data-testid="account-link">
+                      <Link to="/account" className="text-[var(--text-primary)] hover:text-[var(--brand-gold)]" data-testid="account-link">
                         My Account
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem 
                       onClick={logout}
-                      className="text-white hover:text-[#D4AF37] cursor-pointer"
+                      className="text-[var(--text-primary)] hover:text-[var(--brand-gold)] cursor-pointer"
                       data-testid="logout-btn"
                     >
                       Logout
@@ -96,7 +96,7 @@ const Navbar = () => {
               ) : (
                 <Link
                   to="/login"
-                  className="text-white/80 hover:text-[#D4AF37] transition-colors"
+                  className="text-[var(--text-secondary)] hover:text-[var(--brand-gold)] transition-colors"
                   data-testid="login-link"
                 >
                   <User size={20} />
@@ -106,12 +106,12 @@ const Navbar = () => {
               {/* Cart */}
               <button
                 onClick={() => setIsOpen(true)}
-                className="relative text-white/80 hover:text-[#D4AF37] transition-colors"
+                className="relative text-[var(--text-secondary)] hover:text-[var(--brand-gold)] transition-colors"
                 data-testid="cart-button"
               >
                 <ShoppingBag size={20} />
                 {totalItems > 0 && (
-                  <span className="absolute -top-2 -right-2 w-5 h-5 bg-[#D4AF37] text-black text-xs flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 w-5 h-5 bg-[var(--brand-gold)] text-black text-xs flex items-center justify-center">
                     {totalItems}
                   </span>
                 )}
@@ -120,7 +120,7 @@ const Navbar = () => {
               {/* Mobile menu button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden text-white/80 hover:text-[#D4AF37] transition-colors"
+                className="lg:hidden text-[var(--text-secondary)] hover:text-[var(--brand-gold)] transition-colors"
                 data-testid="mobile-menu-btn"
               >
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -136,7 +136,7 @@ const Navbar = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden bg-[#0F0F0F] border-t border-white/5"
+              className="lg:hidden bg-[var(--bg-paper)] border-t border-white/5"
             >
               <div className="px-6 py-8 space-y-6">
                 {navLinks.map((link) => (
@@ -144,7 +144,7 @@ const Navbar = () => {
                     key={link.name}
                     to={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block text-sm uppercase tracking-widest text-white/80 hover:text-[#D4AF37] transition-colors"
+                    className="block text-sm uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--brand-gold)] transition-colors"
                   >
                     {link.name}
                   </Link>
