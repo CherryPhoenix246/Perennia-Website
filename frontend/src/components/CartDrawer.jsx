@@ -2,10 +2,14 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Minus, Plus, ShoppingBag } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useCurrency } from '@/context/CurrencyContext';
 import { Button } from '@/components/ui/button';
 
 const CartDrawer = () => {
   const { items, isOpen, setIsOpen, removeItem, updateQuantity, totalBBD, totalUSD } = useCart();
+  const { currency, formatPrice, getPrice) } = useCurrency();
+
+  const displayTotal = currency === 'USD' ? totalUSD : totalBBD;
 
   return (
     <AnimatePresence>
@@ -69,10 +73,7 @@ const CartDrawer = () => {
                         <div className="flex-1 min-w-0">
                           <h3 className="text-sm text-[var(--text-primary)] truncate">{product.name}</h3>
                           <p className="text-xs text-[var(--brand-gold)] mt-1">
-                            ${product.price_bbd.toFixed(2)} BBD
-                          </p>
-                          <p className="text-xs text-[var(--text-secondary)]">
-                            ${product.price_usd.toFixed(2)} USD
+                            {formatPrice(product.price_bbd, product.price_usd)}
                           </p>
 
                           {/* Quantity */}
@@ -115,10 +116,7 @@ const CartDrawer = () => {
                   <span className="text-sm text-[var(--text-secondary)] uppercase tracking-widest">Total</span>
                   <div className="text-right">
                     <p className="text-lg font-serif text-[var(--brand-gold)]">
-                      ${totalBBD.toFixed(2)} BBD
-                    </p>
-                    <p className="text-sm text-[var(--text-secondary)]">
-                      ${totalUSD.toFixed(2)} USD
+                      ${displayTotal.toFixed(2)} {currency}
                     </p>
                   </div>
                 </div>
