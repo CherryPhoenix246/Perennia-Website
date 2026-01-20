@@ -24,7 +24,7 @@ const ProductCard = ({ product, index = 0 }) => {
     >
       <Link to={`/product/${product.id}`}>
         {/* Image */}
-        <div className="relative aspect-[4/5] bg-[#1A1A1A] overflow-hidden mb-4">
+        <div className="relative aspect-[4/5] bg-[var(--bg-subtle)] overflow-hidden mb-4">
           <img
             src={product.images[0]}
             alt={product.name}
@@ -34,7 +34,7 @@ const ProductCard = ({ product, index = 0 }) => {
           {/* Quick add button */}
           <button
             onClick={handleAddToCart}
-            className="absolute bottom-4 right-4 w-10 h-10 bg-[#D4AF37] text-black flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-[#AA8C2C]"
+            className="absolute bottom-4 right-4 w-10 h-10 bg-[var(--brand-gold)] text-black flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-[var(--brand-gold-dim)]"
             data-testid={`quick-add-${product.id}`}
           >
             <ShoppingBag size={18} />
@@ -42,7 +42,7 @@ const ProductCard = ({ product, index = 0 }) => {
 
           {/* Featured badge */}
           {product.featured && (
-            <span className="absolute top-4 left-4 px-3 py-1 bg-[#D4AF37] text-black text-xs uppercase tracking-widest">
+            <span className="absolute top-4 left-4 px-3 py-1 bg-[var(--brand-gold)] text-black text-xs uppercase tracking-widest">
               Featured
             </span>
           )}
@@ -50,14 +50,14 @@ const ProductCard = ({ product, index = 0 }) => {
           {/* Out of stock overlay */}
           {product.stock === 0 && (
             <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-              <span className="text-white text-xs uppercase tracking-widest">Out of Stock</span>
+              <span className="text-[var(--text-primary)] text-xs uppercase tracking-widest">Out of Stock</span>
             </div>
           )}
         </div>
 
         {/* Info */}
         <div className="space-y-2">
-          <h3 className="text-white text-sm font-medium">{product.name}</h3>
+          <h3 className="text-[var(--text-primary)] text-sm font-medium">{product.name}</h3>
           
           {/* Rating */}
           {product.review_count > 0 && (
@@ -71,14 +71,14 @@ const ProductCard = ({ product, index = 0 }) => {
                   />
                 ))}
               </div>
-              <span className="text-xs text-[#A3A3A3]">({product.review_count})</span>
+              <span className="text-xs text-[var(--text-secondary)]">({product.review_count})</span>
             </div>
           )}
 
           {/* Price */}
           <div className="flex items-baseline space-x-2">
-            <span className="text-[#D4AF37] font-serif">${product.price_bbd.toFixed(2)} BBD</span>
-            <span className="text-xs text-[#A3A3A3]">${product.price_usd.toFixed(2)} USD</span>
+            <span className="text-[var(--brand-gold)] font-serif">${product.price_bbd.toFixed(2)} BBD</span>
+            <span className="text-xs text-[var(--text-secondary)]">${product.price_usd.toFixed(2)} USD</span>
           </div>
         </div>
       </Link>
