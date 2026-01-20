@@ -6,14 +6,16 @@ import {
   Package, 
   ShoppingCart, 
   MessageSquare, 
+  Settings,
   LogOut,
   Plus,
   Edit,
   Trash2,
-  Eye
+  Save
 } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
+import { useSiteSettings } from '@/context/SiteSettingsContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -32,6 +34,7 @@ import {
   DialogTrigger,
   DialogDescription,
 } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
@@ -565,6 +568,399 @@ const MessagesManagement = () => {
   );
 };
 
+// Site Settings Management
+const SiteSettingsManagement = () => {
+  const { settings, updateSettings, refreshSettings } = useSiteSettings();
+  const { token } = useAuth();
+  const [saving, setSaving] = useState(false);
+  const [formData, setFormData] = useState({
+    business_name: '',
+    tagline: '',
+    logo_url: '',
+    footer_text: '',
+    social_links: {
+      instagram: '',
+      facebook: '',
+      twitter: '',
+      tiktok: '',
+      whatsapp: '',
+      youtube: '',
+      pinterest: ''
+    },
+    contact_info: {
+      address: '',
+      phone: '',
+      email: ''
+    },
+    hero_section: {
+      tagline: '',
+      title: '',
+      subtitle: '',
+      description: '',
+      image_url: ''
+    },
+    about_section: {
+      title: '',
+      content: '',
+      quote: '',
+      image_url: ''
+    }
+  });
+
+  useEffect(() => {
+    if (settings) {
+      setFormData({
+        business_name: settings.business_name || '',
+        tagline: settings.tagline || '',
+        logo_url: settings.logo_url || '',
+        footer_text: settings.footer_text || '',
+        social_links: {
+          instagram: settings.social_links?.instagram || '',
+          facebook: settings.social_links?.facebook || '',
+          twitter: settings.social_links?.twitter || '',
+          tiktok: settings.social_links?.tiktok || '',
+          whatsapp: settings.social_links?.whatsapp || '',
+          youtube: settings.social_links?.youtube || '',
+          pinterest: settings.social_links?.pinterest || ''
+        },
+        contact_info: {
+          address: settings.contact_info?.address || '',
+          phone: settings.contact_info?.phone || '',
+          email: settings.contact_info?.email || ''
+        },
+        hero_section: {
+          tagline: settings.hero_section?.tagline || '',
+          title: settings.hero_section?.title || '',
+          subtitle: settings.hero_section?.subtitle || '',
+          description: settings.hero_section?.description || '',
+          image_url: settings.hero_section?.image_url || ''
+        },
+        about_section: {
+          title: settings.about_section?.title || '',
+          content: settings.about_section?.content || '',
+          quote: settings.about_section?.quote || '',
+          image_url: settings.about_section?.image_url || ''
+        }
+      });
+    }
+  }, [settings]);
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      await updateSettings(formData, token);
+      refreshSettings();
+      toast.success('Settings saved successfully!');
+    } catch (error) {
+      toast.error('Failed to save settings');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-2xl font-serif text-white">Site Settings</h1>
+        <Button onClick={handleSave} disabled={saving} className="btn-primary px-6 py-2" data-testid="save-settings-btn">
+          <Save size={18} className="mr-2" />
+          {saving ? 'Saving...' : 'Save Changes'}
+        </Button>
+      </div>
+
+      <Tabs defaultValue="general" className="w-full">
+        <TabsList className="bg-transparent border-b border-white/10 rounded-none w-full justify-start mb-8 p-0">
+          <TabsTrigger value="general" className="data-[state=active]:bg-transparent data-[state=active]:text-[#D4AF37] data-[state=active]:border-b-2 data-[state=active]:border-[#D4AF37] rounded-none px-6 py-3 text-[#A3A3A3]">
+            General
+          </TabsTrigger>
+          <TabsTrigger value="social" className="data-[state=active]:bg-transparent data-[state=active]:text-[#D4AF37] data-[state=active]:border-b-2 data-[state=active]:border-[#D4AF37] rounded-none px-6 py-3 text-[#A3A3A3]">
+            Social Media
+          </TabsTrigger>
+          <TabsTrigger value="contact" className="data-[state=active]:bg-transparent data-[state=active]:text-[#D4AF37] data-[state=active]:border-b-2 data-[state=active]:border-[#D4AF37] rounded-none px-6 py-3 text-[#A3A3A3]">
+            Contact Info
+          </TabsTrigger>
+          <TabsTrigger value="hero" className="data-[state=active]:bg-transparent data-[state=active]:text-[#D4AF37] data-[state=active]:border-b-2 data-[state=active]:border-[#D4AF37] rounded-none px-6 py-3 text-[#A3A3A3]">
+            Hero Section
+          </TabsTrigger>
+          <TabsTrigger value="about" className="data-[state=active]:bg-transparent data-[state=active]:text-[#D4AF37] data-[state=active]:border-b-2 data-[state=active]:border-[#D4AF37] rounded-none px-6 py-3 text-[#A3A3A3]">
+            About Page
+          </TabsTrigger>
+        </TabsList>
+
+        {/* General Tab */}
+        <TabsContent value="general">
+          <div className="bg-[#0F0F0F] border border-white/5 p-6 space-y-6">
+            <div>
+              <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Business Name</label>
+              <Input
+                value={formData.business_name}
+                onChange={(e) => setFormData({ ...formData, business_name: e.target.value })}
+                className="bg-transparent border-white/20 text-white"
+                data-testid="settings-business-name"
+              />
+            </div>
+            <div>
+              <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Tagline</label>
+              <Input
+                value={formData.tagline}
+                onChange={(e) => setFormData({ ...formData, tagline: e.target.value })}
+                className="bg-transparent border-white/20 text-white"
+                data-testid="settings-tagline"
+              />
+            </div>
+            <div>
+              <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Logo URL</label>
+              <Input
+                value={formData.logo_url}
+                onChange={(e) => setFormData({ ...formData, logo_url: e.target.value })}
+                placeholder="https://example.com/logo.png"
+                className="bg-transparent border-white/20 text-white"
+                data-testid="settings-logo-url"
+              />
+              {formData.logo_url && (
+                <div className="mt-4 p-4 bg-[#1A1A1A]">
+                  <p className="text-xs text-[#A3A3A3] mb-2">Preview:</p>
+                  <img src={formData.logo_url} alt="Logo Preview" className="h-16 w-auto mix-blend-lighten" />
+                </div>
+              )}
+            </div>
+            <div>
+              <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Footer Text</label>
+              <Textarea
+                value={formData.footer_text}
+                onChange={(e) => setFormData({ ...formData, footer_text: e.target.value })}
+                className="bg-transparent border-white/20 text-white min-h-[100px]"
+                data-testid="settings-footer-text"
+              />
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Social Media Tab */}
+        <TabsContent value="social">
+          <div className="bg-[#0F0F0F] border border-white/5 p-6 space-y-6">
+            <p className="text-[#A3A3A3] text-sm mb-4">Enter your social media profile URLs. Leave blank to hide.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Instagram</label>
+                <Input
+                  value={formData.social_links.instagram}
+                  onChange={(e) => setFormData({ ...formData, social_links: { ...formData.social_links, instagram: e.target.value } })}
+                  placeholder="https://instagram.com/yourusername"
+                  className="bg-transparent border-white/20 text-white"
+                  data-testid="settings-instagram"
+                />
+              </div>
+              <div>
+                <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Facebook</label>
+                <Input
+                  value={formData.social_links.facebook}
+                  onChange={(e) => setFormData({ ...formData, social_links: { ...formData.social_links, facebook: e.target.value } })}
+                  placeholder="https://facebook.com/yourpage"
+                  className="bg-transparent border-white/20 text-white"
+                  data-testid="settings-facebook"
+                />
+              </div>
+              <div>
+                <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Twitter / X</label>
+                <Input
+                  value={formData.social_links.twitter}
+                  onChange={(e) => setFormData({ ...formData, social_links: { ...formData.social_links, twitter: e.target.value } })}
+                  placeholder="https://twitter.com/yourusername"
+                  className="bg-transparent border-white/20 text-white"
+                  data-testid="settings-twitter"
+                />
+              </div>
+              <div>
+                <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">TikTok</label>
+                <Input
+                  value={formData.social_links.tiktok}
+                  onChange={(e) => setFormData({ ...formData, social_links: { ...formData.social_links, tiktok: e.target.value } })}
+                  placeholder="https://tiktok.com/@yourusername"
+                  className="bg-transparent border-white/20 text-white"
+                  data-testid="settings-tiktok"
+                />
+              </div>
+              <div>
+                <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">WhatsApp Number</label>
+                <Input
+                  value={formData.social_links.whatsapp}
+                  onChange={(e) => setFormData({ ...formData, social_links: { ...formData.social_links, whatsapp: e.target.value } })}
+                  placeholder="+1246XXXXXXX"
+                  className="bg-transparent border-white/20 text-white"
+                  data-testid="settings-whatsapp"
+                />
+              </div>
+              <div>
+                <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">YouTube</label>
+                <Input
+                  value={formData.social_links.youtube}
+                  onChange={(e) => setFormData({ ...formData, social_links: { ...formData.social_links, youtube: e.target.value } })}
+                  placeholder="https://youtube.com/@yourchannel"
+                  className="bg-transparent border-white/20 text-white"
+                  data-testid="settings-youtube"
+                />
+              </div>
+              <div>
+                <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Pinterest</label>
+                <Input
+                  value={formData.social_links.pinterest}
+                  onChange={(e) => setFormData({ ...formData, social_links: { ...formData.social_links, pinterest: e.target.value } })}
+                  placeholder="https://pinterest.com/yourusername"
+                  className="bg-transparent border-white/20 text-white"
+                  data-testid="settings-pinterest"
+                />
+              </div>
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Contact Info Tab */}
+        <TabsContent value="contact">
+          <div className="bg-[#0F0F0F] border border-white/5 p-6 space-y-6">
+            <div>
+              <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Business Address</label>
+              <Textarea
+                value={formData.contact_info.address}
+                onChange={(e) => setFormData({ ...formData, contact_info: { ...formData.contact_info, address: e.target.value } })}
+                placeholder="Bridgetown, Barbados"
+                className="bg-transparent border-white/20 text-white"
+                data-testid="settings-address"
+              />
+            </div>
+            <div>
+              <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Phone Number</label>
+              <Input
+                value={formData.contact_info.phone}
+                onChange={(e) => setFormData({ ...formData, contact_info: { ...formData.contact_info, phone: e.target.value } })}
+                placeholder="+1 (246) 123-4567"
+                className="bg-transparent border-white/20 text-white"
+                data-testid="settings-phone"
+              />
+            </div>
+            <div>
+              <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Email Address</label>
+              <Input
+                value={formData.contact_info.email}
+                onChange={(e) => setFormData({ ...formData, contact_info: { ...formData.contact_info, email: e.target.value } })}
+                placeholder="info@perennia.bb"
+                className="bg-transparent border-white/20 text-white"
+                data-testid="settings-email"
+              />
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Hero Section Tab */}
+        <TabsContent value="hero">
+          <div className="bg-[#0F0F0F] border border-white/5 p-6 space-y-6">
+            <p className="text-[#A3A3A3] text-sm mb-4">Customize the homepage hero section.</p>
+            <div>
+              <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Tagline (small text above title)</label>
+              <Input
+                value={formData.hero_section.tagline}
+                onChange={(e) => setFormData({ ...formData, hero_section: { ...formData.hero_section, tagline: e.target.value } })}
+                placeholder="Handcrafted in Barbados"
+                className="bg-transparent border-white/20 text-white"
+                data-testid="settings-hero-tagline"
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Title (Line 1)</label>
+                <Input
+                  value={formData.hero_section.title}
+                  onChange={(e) => setFormData({ ...formData, hero_section: { ...formData.hero_section, title: e.target.value } })}
+                  placeholder="Luxury Artisan"
+                  className="bg-transparent border-white/20 text-white"
+                  data-testid="settings-hero-title"
+                />
+              </div>
+              <div>
+                <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Subtitle (Line 2 - Gold)</label>
+                <Input
+                  value={formData.hero_section.subtitle}
+                  onChange={(e) => setFormData({ ...formData, hero_section: { ...formData.hero_section, subtitle: e.target.value } })}
+                  placeholder="Gifts & Décor"
+                  className="bg-transparent border-white/20 text-white"
+                  data-testid="settings-hero-subtitle"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Description</label>
+              <Textarea
+                value={formData.hero_section.description}
+                onChange={(e) => setFormData({ ...formData, hero_section: { ...formData.hero_section, description: e.target.value } })}
+                placeholder="Discover our collection..."
+                className="bg-transparent border-white/20 text-white min-h-[100px]"
+                data-testid="settings-hero-description"
+              />
+            </div>
+            <div>
+              <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Background Image URL</label>
+              <Input
+                value={formData.hero_section.image_url}
+                onChange={(e) => setFormData({ ...formData, hero_section: { ...formData.hero_section, image_url: e.target.value } })}
+                placeholder="https://example.com/hero-image.jpg"
+                className="bg-transparent border-white/20 text-white"
+                data-testid="settings-hero-image"
+              />
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* About Page Tab */}
+        <TabsContent value="about">
+          <div className="bg-[#0F0F0F] border border-white/5 p-6 space-y-6">
+            <p className="text-[#A3A3A3] text-sm mb-4">Customize the About page content.</p>
+            <div>
+              <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Section Title</label>
+              <Input
+                value={formData.about_section.title}
+                onChange={(e) => setFormData({ ...formData, about_section: { ...formData.about_section, title: e.target.value } })}
+                placeholder="Crafted with Love, Inspired by the Caribbean"
+                className="bg-transparent border-white/20 text-white"
+                data-testid="settings-about-title"
+              />
+            </div>
+            <div>
+              <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Content (use double line breaks for paragraphs)</label>
+              <Textarea
+                value={formData.about_section.content}
+                onChange={(e) => setFormData({ ...formData, about_section: { ...formData.about_section, content: e.target.value } })}
+                placeholder="Your story here..."
+                className="bg-transparent border-white/20 text-white min-h-[200px]"
+                data-testid="settings-about-content"
+              />
+            </div>
+            <div>
+              <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Quote (displayed in gold italic)</label>
+              <Input
+                value={formData.about_section.quote}
+                onChange={(e) => setFormData({ ...formData, about_section: { ...formData.about_section, quote: e.target.value } })}
+                placeholder="Every piece tells a story..."
+                className="bg-transparent border-white/20 text-white"
+                data-testid="settings-about-quote"
+              />
+            </div>
+            <div>
+              <label className="text-xs uppercase tracking-widest text-[#A3A3A3] mb-2 block">Image URL</label>
+              <Input
+                value={formData.about_section.image_url}
+                onChange={(e) => setFormData({ ...formData, about_section: { ...formData.about_section, image_url: e.target.value } })}
+                placeholder="https://example.com/about-image.jpg"
+                className="bg-transparent border-white/20 text-white"
+                data-testid="settings-about-image"
+              />
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+};
+
 // Main Admin Dashboard
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -586,7 +982,8 @@ const AdminDashboard = () => {
     { icon: LayoutDashboard, label: 'Dashboard', path: '/admin/dashboard' },
     { icon: Package, label: 'Products', path: '/admin/products' },
     { icon: ShoppingCart, label: 'Orders', path: '/admin/orders' },
-    { icon: MessageSquare, label: 'Messages', path: '/admin/messages' }
+    { icon: MessageSquare, label: 'Messages', path: '/admin/messages' },
+    { icon: Settings, label: 'Settings', path: '/admin/settings' }
   ];
 
   if (!isAuthenticated || !isAdmin) {
@@ -643,6 +1040,7 @@ const AdminDashboard = () => {
           <Route path="products" element={<ProductsManagement />} />
           <Route path="orders" element={<OrdersManagement />} />
           <Route path="messages" element={<MessagesManagement />} />
+          <Route path="settings" element={<SiteSettingsManagement />} />
           <Route path="*" element={<DashboardOverview />} />
         </Routes>
       </main>
