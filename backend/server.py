@@ -273,24 +273,39 @@ async def get_me(user: dict = Depends(get_current_user)):
 
 @api_router.get("/products", response_model=List[ProductResponse])
 async def get_products(category: Optional[str] = None, featured: Optional[bool] = None):
-    query = {}
+    match_stage = {}
     if category:
-        query["category"] = category
+        match_stage["category"] = category
     if featured is not None:
-        query["featured"] = featured
+        match_stage["featured"] = featured
     
-    products = await db.products.find(query, {"_id": 0}).to_list(100)
+    pipeline = [
+        {"$match": match_stage} if match_stage else {"$match": {}},
+        {
+            "$lookup": {
+                "from": "reviews",
+                "localField": "id",
+                "foreignField": "product_id",
+                "as": "product_reviews"
+            }
+        },
+        {
+            "$addFields": {
+                "average_rating": {
+                    "$cond": {
+                        "if": {"$gt": [{"$size": "$product_reviews"}, 0]},
+                        "then": {"$avg": "$product_reviews.rating"},
+                        "else": 0.0
+                    }
+                },
+                "review_count": {"$size": "$product_reviews"}
+            }
+        },
+        {"$project": {"product_reviews": 0, "_id": 0}},
+        {"$limit": 100}
+    ]
     
-    # Get review stats for each product
-    for product in products:
-        reviews = await db.reviews.find({"product_id": product["id"]}, {"_id": 0}).to_list(100)
-        if reviews:
-            product["average_rating"] = sum(r["rating"] for r in reviews) / len(reviews)
-            product["review_count"] = len(reviews)
-        else:
-            product["average_rating"] = 0.0
-            product["review_count"] = 0
-    
+    products = await db.products.aggregate(pipeline).to_list(100)
     return products
 
 @api_router.get("/products/{product_id}", response_model=ProductResponse)
