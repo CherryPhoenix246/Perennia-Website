@@ -186,6 +186,25 @@ class AboutSection(BaseModel):
     quote: Optional[str] = "Every piece tells a story of Caribbean beauty and timeless elegance."
     image_url: Optional[str] = ""
 
+class ThemeColors(BaseModel):
+    primary: Optional[str] = "#D4AF37"  # Gold
+    secondary: Optional[str] = "#40E0D0"  # Turquoise
+    accent: Optional[str] = "#4A0E5C"  # Deep purple
+    background: Optional[str] = "#050505"  # Near black
+    surface: Optional[str] = "#0F0F0F"  # Dark surface
+    text_primary: Optional[str] = "#F5F5F5"  # White text
+    text_secondary: Optional[str] = "#A3A3A3"  # Gray text
+
+class LayoutSettings(BaseModel):
+    show_hero: Optional[bool] = True
+    show_categories: Optional[bool] = True
+    show_featured: Optional[bool] = True
+    show_about_snippet: Optional[bool] = True
+    show_newsletter: Optional[bool] = True
+    navbar_style: Optional[str] = "glass"  # glass, solid, transparent
+    footer_style: Optional[str] = "full"  # full, minimal
+    product_card_style: Optional[str] = "default"  # default, minimal, detailed
+
 class SiteSettings(BaseModel):
     business_name: Optional[str] = "Perennia"
     tagline: Optional[str] = "Handcrafted Luxury from Barbados"
@@ -195,6 +214,8 @@ class SiteSettings(BaseModel):
     hero_section: Optional[HeroSection] = None
     about_section: Optional[AboutSection] = None
     footer_text: Optional[str] = "Handcrafted luxury from Barbados. Each piece tells a story of Caribbean artistry and timeless elegance."
+    theme_colors: Optional[ThemeColors] = None
+    layout_settings: Optional[LayoutSettings] = None
 
 class SiteSettingsUpdate(BaseModel):
     business_name: Optional[str] = None
@@ -205,6 +226,8 @@ class SiteSettingsUpdate(BaseModel):
     hero_section: Optional[HeroSection] = None
     about_section: Optional[AboutSection] = None
     footer_text: Optional[str] = None
+    theme_colors: Optional[ThemeColors] = None
+    layout_settings: Optional[LayoutSettings] = None
 
 # ===================== AUTH HELPERS =====================
 
