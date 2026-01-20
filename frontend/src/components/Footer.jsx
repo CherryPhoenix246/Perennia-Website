@@ -1,10 +1,23 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Instagram, Facebook, Mail, MapPin, Phone } from 'lucide-react';
+import { Instagram, Facebook, Mail, MapPin, Phone, Twitter, Youtube, MessageCircle } from 'lucide-react';
+import { useSiteSettings } from '@/context/SiteSettingsContext';
 
 const Footer = () => {
   const location = useLocation();
+  const { settings } = useSiteSettings();
   const isAdmin = location.pathname.startsWith('/admin');
   if (isAdmin) return null;
+
+  const socialLinks = settings.social_links || {};
+  const contactInfo = settings.contact_info || {};
+
+  const socialIcons = [
+    { key: 'instagram', icon: Instagram, url: socialLinks.instagram },
+    { key: 'facebook', icon: Facebook, url: socialLinks.facebook },
+    { key: 'twitter', icon: Twitter, url: socialLinks.twitter },
+    { key: 'youtube', icon: Youtube, url: socialLinks.youtube },
+    { key: 'whatsapp', icon: MessageCircle, url: socialLinks.whatsapp ? `https://wa.me/${socialLinks.whatsapp.replace(/[^0-9]/g, '')}` : '' },
+  ].filter(s => s.url);
 
   return (
     <footer className="bg-[#0F0F0F] border-t border-white/5">
@@ -12,41 +25,72 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <img 
-              src="https://customer-assets.emergentagent.com/job_8aaf14c8-9661-4336-8e9d-83cf935f1bb7/artifacts/f1ti0xuj_Screenshot_20260120_173740_Canva.jpg" 
-              alt="Perennia" 
-              className="h-20 w-auto mb-6 mix-blend-lighten"
-            />
+            {settings.logo_url ? (
+              <img 
+                src={settings.logo_url} 
+                alt={settings.business_name} 
+                className="h-20 w-auto mb-6 mix-blend-lighten"
+              />
+            ) : (
+              <h2 className="text-3xl font-serif text-[#D4AF37] mb-6">{settings.business_name}</h2>
+            )}
             <p className="text-[#A3A3A3] text-sm leading-relaxed mb-8">
-              Handcrafted luxury from Barbados. Each piece tells a story of Caribbean artistry and timeless elegance.
+              {settings.footer_text}
             </p>
-            <div className="flex space-x-4">
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-icon"
-                data-testid="social-instagram"
-              >
-                <Instagram size={18} />
-              </a>
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-icon"
-                data-testid="social-facebook"
-              >
-                <Facebook size={18} />
-              </a>
-              <a
-                href="mailto:info@perennia.bb"
-                className="social-icon"
-                data-testid="social-email"
-              >
-                <Mail size={18} />
-              </a>
-            </div>
+            {socialIcons.length > 0 && (
+              <div className="flex space-x-4">
+                {socialIcons.map(({ key, icon: Icon, url }) => (
+                  <a
+                    key={key}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-icon"
+                    data-testid={`social-${key}`}
+                  >
+                    <Icon size={18} />
+                  </a>
+                ))}
+                {contactInfo.email && (
+                  <a
+                    href={`mailto:${contactInfo.email}`}
+                    className="social-icon"
+                    data-testid="social-email"
+                  >
+                    <Mail size={18} />
+                  </a>
+                )}
+              </div>
+            )}
+            {socialIcons.length === 0 && (
+              <div className="flex space-x-4">
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-icon"
+                  data-testid="social-instagram"
+                >
+                  <Instagram size={18} />
+                </a>
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-icon"
+                  data-testid="social-facebook"
+                >
+                  <Facebook size={18} />
+                </a>
+                <a
+                  href={`mailto:${contactInfo.email || 'info@perennia.bb'}`}
+                  className="social-icon"
+                  data-testid="social-email"
+                >
+                  <Mail size={18} />
+                </a>
+              </div>
+            )}
           </div>
 
           {/* Quick Links */}
@@ -105,16 +149,16 @@ const Footer = () => {
               <li className="flex items-start space-x-3">
                 <MapPin size={18} className="text-[#D4AF37] flex-shrink-0 mt-0.5" />
                 <span className="text-[#A3A3A3] text-sm">
-                  Bridgetown, Barbados
+                  {contactInfo.address || 'Bridgetown, Barbados'}
                 </span>
               </li>
               <li className="flex items-center space-x-3">
                 <Phone size={18} className="text-[#D4AF37] flex-shrink-0" />
-                <span className="text-[#A3A3A3] text-sm">+1 (246) 123-4567</span>
+                <span className="text-[#A3A3A3] text-sm">{contactInfo.phone || '+1 (246) 123-4567'}</span>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail size={18} className="text-[#D4AF37] flex-shrink-0" />
-                <span className="text-[#A3A3A3] text-sm">info@perennia.bb</span>
+                <span className="text-[#A3A3A3] text-sm">{contactInfo.email || 'info@perennia.bb'}</span>
               </li>
             </ul>
           </div>
@@ -123,7 +167,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center">
           <p className="text-[#525252] text-xs">
-            © {new Date().getFullYear()} Perennia. All rights reserved.
+            © {new Date().getFullYear()} {settings.business_name}. All rights reserved.
           </p>
           <p className="text-[#525252] text-xs mt-4 md:mt-0">
             Prices shown in BBD & USD
