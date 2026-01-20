@@ -602,7 +602,7 @@ const AdminDashboard = () => {
             <img 
               src="https://customer-assets.emergentagent.com/job_8aaf14c8-9661-4336-8e9d-83cf935f1bb7/artifacts/f1ti0xuj_Screenshot_20260120_173740_Canva.jpg" 
               alt="Perennia" 
-              className="h-12 w-auto"
+              className="h-12 w-auto mix-blend-lighten"
             />
           </Link>
           <p className="text-[#525252] text-xs uppercase tracking-widest mt-2">Admin Panel</p>

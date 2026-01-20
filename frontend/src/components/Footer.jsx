@@ -15,7 +15,7 @@ const Footer = () => {
             <img 
               src="https://customer-assets.emergentagent.com/job_8aaf14c8-9661-4336-8e9d-83cf935f1bb7/artifacts/f1ti0xuj_Screenshot_20260120_173740_Canva.jpg" 
               alt="Perennia" 
-              className="h-20 w-auto mb-6"
+              className="h-20 w-auto mb-6 mix-blend-lighten"
             />
             <p className="text-[#A3A3A3] text-sm leading-relaxed mb-8">
               Handcrafted luxury from Barbados. Each piece tells a story of Caribbean artistry and timeless elegance.

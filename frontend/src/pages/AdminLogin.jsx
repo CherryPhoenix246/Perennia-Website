@@ -49,7 +49,7 @@ const AdminLogin = () => {
             <img 
               src="https://customer-assets.emergentagent.com/job_8aaf14c8-9661-4336-8e9d-83cf935f1bb7/artifacts/f1ti0xuj_Screenshot_20260120_173740_Canva.jpg" 
               alt="Perennia" 
-              className="h-16 w-auto mx-auto mb-2"
+              className="h-16 w-auto mx-auto mb-2 mix-blend-lighten"
             />
             <span className="text-[#D4AF37] text-xs uppercase tracking-[0.3em]">Admin Portal</span>
           </div>
