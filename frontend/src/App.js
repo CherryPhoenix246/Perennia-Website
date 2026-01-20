@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { SiteSettingsProvider } from "@/context/SiteSettingsContext";
+import { CurrencyProvider } from "@/context/CurrencyContext";
 
 // Layout
 import Navbar from "@/components/Navbar";
@@ -29,34 +30,36 @@ function App() {
   return (
     <AuthProvider>
       <SiteSettingsProvider>
-        <CartProvider>
-          <BrowserRouter>
-            <div className="min-h-screen flex flex-col">
-              <Navbar />
-              <main className="flex-1">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/shop" element={<Shop />} />
-                  <Route path="/shop/:category" element={<Shop />} />
-                  <Route path="/product/:id" element={<ProductDetail />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/checkout" element={<Checkout />} />
-                  <Route path="/checkout/success" element={<CheckoutSuccess />} />
-                  <Route path="/checkout/cancel" element={<CheckoutCancel />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/account" element={<Account />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/admin/login" element={<AdminLogin />} />
-                  <Route path="/admin/*" element={<AdminDashboard />} />
-                </Routes>
-              </main>
-              <Footer />
-            </div>
-            <Toaster position="top-right" richColors />
-          </BrowserRouter>
-        </CartProvider>
+        <CurrencyProvider>
+          <CartProvider>
+            <BrowserRouter>
+              <div className="min-h-screen flex flex-col">
+                <Navbar />
+                <main className="flex-1">
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/shop" element={<Shop />} />
+                    <Route path="/shop/:category" element={<Shop />} />
+                    <Route path="/product/:id" element={<ProductDetail />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/checkout/success" element={<CheckoutSuccess />} />
+                    <Route path="/checkout/cancel" element={<CheckoutCancel />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/account" element={<Account />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/admin/login" element={<AdminLogin />} />
+                    <Route path="/admin/*" element={<AdminDashboard />} />
+                  </Routes>
+                </main>
+                <Footer />
+              </div>
+              <Toaster position="top-right" richColors />
+            </BrowserRouter>
+          </CartProvider>
+        </CurrencyProvider>
       </SiteSettingsProvider>
     </AuthProvider>
   );
