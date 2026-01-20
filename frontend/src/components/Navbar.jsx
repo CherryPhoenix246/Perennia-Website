@@ -5,6 +5,7 @@ import { ShoppingBag, Menu, X, User, ChevronDown } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useSiteSettings } from '@/context/SiteSettingsContext';
+import { useCurrency } from '@/context/CurrencyContext';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +19,7 @@ const Navbar = () => {
   const { totalItems, setIsOpen } = useCart();
   const { user, logout, isAuthenticated } = useAuth();
   const { settings } = useSiteSettings();
+  const { currency, toggleCurrency } = useCurrency();
   const location = useLocation();
 
   const isAdmin = location.pathname.startsWith('/admin');
@@ -67,7 +69,17 @@ const Navbar = () => {
             </div>
 
             {/* Right side icons */}
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-4 md:space-x-6">
+              {/* Currency Switcher */}
+              <button
+                onClick={toggleCurrency}
+                className="px-2 py-1 text-xs font-medium uppercase tracking-wider border border-[var(--brand-gold)]/50 text-[var(--brand-gold)] hover:bg-[var(--brand-gold)] hover:text-black transition-all duration-300"
+                data-testid="currency-switcher"
+                title={`Switch to ${currency === 'BBD' ? 'USD' : 'BBD'}`}
+              >
+                {currency}
+              </button>
+
               {/* Account */}
               {isAuthenticated ? (
                 <DropdownMenu>
