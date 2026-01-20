@@ -662,6 +662,81 @@ async def get_contact_messages(admin: dict = Depends(get_admin_user)):
     messages = await db.contact_messages.find({}, {"_id": 0}).sort("created_at", -1).to_list(100)
     return messages
 
+# ===================== SITE SETTINGS ROUTES =====================
+
+@api_router.get("/settings")
+async def get_site_settings():
+    """Get site settings (public endpoint)"""
+    settings = await db.site_settings.find_one({"id": "main"}, {"_id": 0})
+    if not settings:
+        # Return default settings
+        default_settings = {
+            "id": "main",
+            "business_name": "Perennia",
+            "tagline": "Handcrafted Luxury from Barbados",
+            "logo_url": "https://customer-assets.emergentagent.com/job_8aaf14c8-9661-4336-8e9d-83cf935f1bb7/artifacts/f1ti0xuj_Screenshot_20260120_173740_Canva.jpg",
+            "social_links": {
+                "instagram": "",
+                "facebook": "",
+                "twitter": "",
+                "tiktok": "",
+                "whatsapp": "",
+                "youtube": "",
+                "pinterest": ""
+            },
+            "contact_info": {
+                "address": "Bridgetown, Barbados",
+                "phone": "+1 (246) 123-4567",
+                "email": "info@perennia.bb"
+            },
+            "hero_section": {
+                "tagline": "Handcrafted in Barbados",
+                "title": "Luxury Artisan",
+                "subtitle": "Gifts & Décor",
+                "description": "Discover our collection of handcrafted resin art, natural body care, and artisan candles. Each piece crafted with love and Caribbean spirit.",
+                "image_url": "https://images.unsplash.com/photo-1668086682339-f14262879c18?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwxfHxhcnRpc2FuJTIwc2NlbnRlZCUyMGNhbmRsZSUyMGRhcmslMjBtb29kJTIwZ29sZHxlbnwwfHx8fDE3Njg5NDMzNDR8MA&ixlib=rb-4.1.0&q=85"
+            },
+            "about_section": {
+                "title": "Crafted with Love, Inspired by the Caribbean",
+                "content": "Perennia was born from a deep passion for artistry and the enchanting beauty of Barbados. What started as a personal creative journey has blossomed into a celebration of Caribbean craftsmanship.\n\nBased in the vibrant island of Barbados, Perennia represents more than just handcrafted goods—it's a testament to the rich artistic heritage of the Caribbean. Each resin piece captures the turquoise waters of our beaches, each candle carries the warmth of our tropical sunsets.\n\nOur body care line is crafted with natural ingredients, drawing from the healing traditions that have been passed down through generations. We believe that luxury should be accessible, sustainable, and deeply personal.",
+                "quote": "Every piece tells a story of Caribbean beauty and timeless elegance.",
+                "image_url": "https://images.unsplash.com/photo-1759794108525-94ff060da692?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODh8MHwxfHNlYXJjaHwyfHxsdXh1cnklMjBoYW5kbWFkZSUyMHNvYXAlMjBkYXJrJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3Njg5NDMzNDJ8MA&ixlib=rb-4.1.0&q=85"
+            },
+            "footer_text": "Handcrafted luxury from Barbados. Each piece tells a story of Caribbean artistry and timeless elegance."
+        }
+        await db.site_settings.insert_one(default_settings)
+        return default_settings
+    return settings
+
+@api_router.put("/admin/settings")
+async def update_site_settings(settings: SiteSettingsUpdate, admin: dict = Depends(get_admin_user)):
+    """Update site settings (admin only)"""
+    update_data = {k: v for k, v in settings.model_dump().items() if v is not None}
+    
+    # Handle nested objects
+    if "social_links" in update_data and update_data["social_links"]:
+        update_data["social_links"] = update_data["social_links"].model_dump() if hasattr(update_data["social_links"], 'model_dump') else update_data["social_links"]
+    if "contact_info" in update_data and update_data["contact_info"]:
+        update_data["contact_info"] = update_data["contact_info"].model_dump() if hasattr(update_data["contact_info"], 'model_dump') else update_data["contact_info"]
+    if "hero_section" in update_data and update_data["hero_section"]:
+        update_data["hero_section"] = update_data["hero_section"].model_dump() if hasattr(update_data["hero_section"], 'model_dump') else update_data["hero_section"]
+    if "about_section" in update_data and update_data["about_section"]:
+        update_data["about_section"] = update_data["about_section"].model_dump() if hasattr(update_data["about_section"], 'model_dump') else update_data["about_section"]
+    
+    if not update_data:
+        raise HTTPException(status_code=400, detail="No data to update")
+    
+    # Check if settings exist
+    existing = await db.site_settings.find_one({"id": "main"})
+    if existing:
+        await db.site_settings.update_one({"id": "main"}, {"$set": update_data})
+    else:
+        update_data["id"] = "main"
+        await db.site_settings.insert_one(update_data)
+    
+    updated = await db.site_settings.find_one({"id": "main"}, {"_id": 0})
+    return updated
+
 # ===================== ADMIN SETUP =====================
 
 @api_router.post("/admin/setup")
