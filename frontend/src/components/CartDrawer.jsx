@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 const CartDrawer = () => {
   const { items, isOpen, setIsOpen, removeItem, updateQuantity, totalBBD, totalUSD } = useCart();
-  const { currency, formatPrice, getPrice) } = useCurrency();
+  const { currency, formatPrice } = useCurrency();
 
   const displayTotal = currency === 'USD' ? totalUSD : totalBBD;
 
