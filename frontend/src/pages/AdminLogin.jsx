@@ -46,8 +46,12 @@ const AdminLogin = () => {
       >
         <div className="bg-[#0F0F0F] p-8 md:p-12 border border-white/5">
           <div className="text-center mb-8">
+            <img 
+              src="https://customer-assets.emergentagent.com/job_8aaf14c8-9661-4336-8e9d-83cf935f1bb7/artifacts/f1ti0xuj_Screenshot_20260120_173740_Canva.jpg" 
+              alt="Perennia" 
+              className="h-16 w-auto mx-auto mb-2"
+            />
             <span className="text-[#D4AF37] text-xs uppercase tracking-[0.3em]">Admin Portal</span>
-            <h1 className="text-3xl font-serif text-white mt-2">Perennia</h1>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">

@@ -12,7 +12,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <h2 className="text-3xl font-serif text-[#D4AF37] mb-6">PERENNIA</h2>
+            <img 
+              src="https://customer-assets.emergentagent.com/job_8aaf14c8-9661-4336-8e9d-83cf935f1bb7/artifacts/f1ti0xuj_Screenshot_20260120_173740_Canva.jpg" 
+              alt="Perennia" 
+              className="h-20 w-auto mb-6"
+            />
             <p className="text-[#A3A3A3] text-sm leading-relaxed mb-8">
               Handcrafted luxury from Barbados. Each piece tells a story of Caribbean artistry and timeless elegance.
             </p>

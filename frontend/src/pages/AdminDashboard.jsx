@@ -598,8 +598,14 @@ const AdminDashboard = () => {
       {/* Sidebar */}
       <aside className="admin-sidebar w-64 flex-shrink-0 fixed left-0 top-0 bottom-0 flex flex-col">
         <div className="p-6 border-b border-white/5">
-          <Link to="/" className="text-xl font-serif text-[#D4AF37]">PERENNIA</Link>
-          <p className="text-[#525252] text-xs uppercase tracking-widest mt-1">Admin Panel</p>
+          <Link to="/">
+            <img 
+              src="https://customer-assets.emergentagent.com/job_8aaf14c8-9661-4336-8e9d-83cf935f1bb7/artifacts/f1ti0xuj_Screenshot_20260120_173740_Canva.jpg" 
+              alt="Perennia" 
+              className="h-12 w-auto"
+            />
+          </Link>
+          <p className="text-[#525252] text-xs uppercase tracking-widest mt-2">Admin Panel</p>
         </div>
 
         <nav className="flex-1 py-6">
