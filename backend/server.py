@@ -159,6 +159,53 @@ class CheckoutRequest(BaseModel):
     order_id: str
     origin_url: str
 
+class SocialLinks(BaseModel):
+    instagram: Optional[str] = ""
+    facebook: Optional[str] = ""
+    twitter: Optional[str] = ""
+    tiktok: Optional[str] = ""
+    whatsapp: Optional[str] = ""
+    youtube: Optional[str] = ""
+    pinterest: Optional[str] = ""
+
+class ContactInfo(BaseModel):
+    address: Optional[str] = "Bridgetown, Barbados"
+    phone: Optional[str] = "+1 (246) 123-4567"
+    email: Optional[str] = "info@perennia.bb"
+
+class HeroSection(BaseModel):
+    tagline: Optional[str] = "Handcrafted in Barbados"
+    title: Optional[str] = "Luxury Artisan"
+    subtitle: Optional[str] = "Gifts & Décor"
+    description: Optional[str] = "Discover our collection of handcrafted resin art, natural body care, and artisan candles. Each piece crafted with love and Caribbean spirit."
+    image_url: Optional[str] = ""
+
+class AboutSection(BaseModel):
+    title: Optional[str] = "Crafted with Love, Inspired by the Caribbean"
+    content: Optional[str] = "Perennia was born from a deep passion for artistry and the enchanting beauty of Barbados. What started as a personal creative journey has blossomed into a celebration of Caribbean craftsmanship."
+    quote: Optional[str] = "Every piece tells a story of Caribbean beauty and timeless elegance."
+    image_url: Optional[str] = ""
+
+class SiteSettings(BaseModel):
+    business_name: Optional[str] = "Perennia"
+    tagline: Optional[str] = "Handcrafted Luxury from Barbados"
+    logo_url: Optional[str] = ""
+    social_links: Optional[SocialLinks] = None
+    contact_info: Optional[ContactInfo] = None
+    hero_section: Optional[HeroSection] = None
+    about_section: Optional[AboutSection] = None
+    footer_text: Optional[str] = "Handcrafted luxury from Barbados. Each piece tells a story of Caribbean artistry and timeless elegance."
+
+class SiteSettingsUpdate(BaseModel):
+    business_name: Optional[str] = None
+    tagline: Optional[str] = None
+    logo_url: Optional[str] = None
+    social_links: Optional[SocialLinks] = None
+    contact_info: Optional[ContactInfo] = None
+    hero_section: Optional[HeroSection] = None
+    about_section: Optional[AboutSection] = None
+    footer_text: Optional[str] = None
+
 # ===================== AUTH HELPERS =====================
 
 def hash_password(password: str) -> str:
