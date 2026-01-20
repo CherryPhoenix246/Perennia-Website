@@ -747,8 +747,8 @@ async def get_site_settings():
             }
         }
         result = await db.site_settings.insert_one(default_settings)
-        # Return without _id
-        del default_settings["_id"] if "_id" in default_settings else None
+        # Remove _id before returning
+        default_settings.pop("_id", None)
         return default_settings
     return settings
 
