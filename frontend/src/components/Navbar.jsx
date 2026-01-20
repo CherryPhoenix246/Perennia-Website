@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingBag, Menu, X, User, ChevronDown } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
+import { useSiteSettings } from '@/context/SiteSettingsContext';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +17,7 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { totalItems, setIsOpen } = useCart();
   const { user, logout, isAuthenticated } = useAuth();
+  const { settings } = useSiteSettings();
   const location = useLocation();
 
   const isAdmin = location.pathname.startsWith('/admin');
@@ -37,11 +39,17 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link to="/" className="flex items-center" data-testid="logo-link">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_8aaf14c8-9661-4336-8e9d-83cf935f1bb7/artifacts/f1ti0xuj_Screenshot_20260120_173740_Canva.jpg" 
-                alt="Perennia" 
-                className="h-14 w-auto mix-blend-lighten"
-              />
+              {settings.logo_url ? (
+                <img 
+                  src={settings.logo_url} 
+                  alt={settings.business_name} 
+                  className="h-14 w-auto mix-blend-lighten"
+                />
+              ) : (
+                <span className="text-2xl font-serif text-[#D4AF37] tracking-wider">
+                  {settings.business_name}
+                </span>
+              )}
             </Link>
 
             {/* Desktop Navigation */}
