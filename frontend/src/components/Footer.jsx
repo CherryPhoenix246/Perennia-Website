@@ -20,7 +20,7 @@ const Footer = () => {
   ].filter(s => s.url);
 
   return (
-    <footer className="bg-[#0F0F0F] border-t border-white/5">
+    <footer className="bg-[var(--bg-paper)] border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-24">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Brand */}
@@ -29,12 +29,12 @@ const Footer = () => {
               <img 
                 src={settings.logo_url} 
                 alt={settings.business_name} 
-                className="h-20 w-auto mb-6 mix-blend-lighten"
+                className="h-20 w-auto mb-6"
               />
             ) : (
-              <h2 className="text-3xl font-serif text-[#D4AF37] mb-6">{settings.business_name}</h2>
+              <h2 className="text-3xl font-serif text-[var(--brand-gold)] mb-6">{settings.business_name}</h2>
             )}
-            <p className="text-[#A3A3A3] text-sm leading-relaxed mb-8">
+            <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-8">
               {settings.footer_text}
             </p>
             {socialIcons.length > 0 && (
@@ -95,25 +95,25 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xs uppercase tracking-widest text-white mb-6">Quick Links</h3>
+            <h3 className="text-xs uppercase tracking-widest text-[var(--text-primary)] mb-6">Quick Links</h3>
             <ul className="space-y-4">
               <li>
-                <Link to="/shop" className="text-[#A3A3A3] text-sm hover:text-[#D4AF37] transition-colors">
+                <Link to="/shop" className="text-[var(--text-secondary)] text-sm hover:text-[var(--brand-gold)] transition-colors">
                   Shop All
                 </Link>
               </li>
               <li>
-                <Link to="/shop/resin" className="text-[#A3A3A3] text-sm hover:text-[#D4AF37] transition-colors">
+                <Link to="/shop/resin" className="text-[var(--text-secondary)] text-sm hover:text-[var(--brand-gold)] transition-colors">
                   Resin Art
                 </Link>
               </li>
               <li>
-                <Link to="/shop/soaps" className="text-[#A3A3A3] text-sm hover:text-[#D4AF37] transition-colors">
+                <Link to="/shop/soaps" className="text-[var(--text-secondary)] text-sm hover:text-[var(--brand-gold)] transition-colors">
                   Body Care
                 </Link>
               </li>
               <li>
-                <Link to="/shop/candles" className="text-[#A3A3A3] text-sm hover:text-[#D4AF37] transition-colors">
+                <Link to="/shop/candles" className="text-[var(--text-secondary)] text-sm hover:text-[var(--brand-gold)] transition-colors">
                   Candles
                 </Link>
               </li>
@@ -122,20 +122,20 @@ const Footer = () => {
 
           {/* Company */}
           <div>
-            <h3 className="text-xs uppercase tracking-widest text-white mb-6">Company</h3>
+            <h3 className="text-xs uppercase tracking-widest text-[var(--text-primary)] mb-6">Company</h3>
             <ul className="space-y-4">
               <li>
-                <Link to="/about" className="text-[#A3A3A3] text-sm hover:text-[#D4AF37] transition-colors">
+                <Link to="/about" className="text-[var(--text-secondary)] text-sm hover:text-[var(--brand-gold)] transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-[#A3A3A3] text-sm hover:text-[#D4AF37] transition-colors">
+                <Link to="/contact" className="text-[var(--text-secondary)] text-sm hover:text-[var(--brand-gold)] transition-colors">
                   Contact
                 </Link>
               </li>
               <li>
-                <Link to="/account" className="text-[#A3A3A3] text-sm hover:text-[#D4AF37] transition-colors">
+                <Link to="/account" className="text-[var(--text-secondary)] text-sm hover:text-[var(--brand-gold)] transition-colors">
                   My Account
                 </Link>
               </li>
@@ -144,21 +144,21 @@ const Footer = () => {
 
           {/* Contact */}
           <div>
-            <h3 className="text-xs uppercase tracking-widest text-white mb-6">Contact</h3>
+            <h3 className="text-xs uppercase tracking-widest text-[var(--text-primary)] mb-6">Contact</h3>
             <ul className="space-y-4">
               <li className="flex items-start space-x-3">
-                <MapPin size={18} className="text-[#D4AF37] flex-shrink-0 mt-0.5" />
-                <span className="text-[#A3A3A3] text-sm">
+                <MapPin size={18} className="text-[var(--brand-gold)] flex-shrink-0 mt-0.5" />
+                <span className="text-[var(--text-secondary)] text-sm">
                   {contactInfo.address || 'Bridgetown, Barbados'}
                 </span>
               </li>
               <li className="flex items-center space-x-3">
-                <Phone size={18} className="text-[#D4AF37] flex-shrink-0" />
-                <span className="text-[#A3A3A3] text-sm">{contactInfo.phone || '+1 (246) 123-4567'}</span>
+                <Phone size={18} className="text-[var(--brand-gold)] flex-shrink-0" />
+                <span className="text-[var(--text-secondary)] text-sm">{contactInfo.phone || '+1 (246) 123-4567'}</span>
               </li>
               <li className="flex items-center space-x-3">
-                <Mail size={18} className="text-[#D4AF37] flex-shrink-0" />
-                <span className="text-[#A3A3A3] text-sm">{contactInfo.email || 'info@perennia.bb'}</span>
+                <Mail size={18} className="text-[var(--brand-gold)] flex-shrink-0" />
+                <span className="text-[var(--text-secondary)] text-sm">{contactInfo.email || 'info@perennia.bb'}</span>
               </li>
             </ul>
           </div>
@@ -166,10 +166,10 @@ const Footer = () => {
 
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-[#525252] text-xs">
+          <p className="text-[var(--text-muted)] text-xs">
             © {new Date().getFullYear()} {settings.business_name}. All rights reserved.
           </p>
-          <p className="text-[#525252] text-xs mt-4 md:mt-0">
+          <p className="text-[var(--text-muted)] text-xs mt-4 md:mt-0">
             Prices shown in BBD & USD
           </p>
         </div>
