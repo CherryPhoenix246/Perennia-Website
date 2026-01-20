@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
+import { useSiteSettings } from '@/context/SiteSettingsContext';
 import ProductCard from '@/components/ProductCard';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
@@ -11,6 +12,10 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { settings } = useSiteSettings();
+
+  const heroSection = settings.hero_section || {};
+  const aboutSection = settings.about_section || {};
 
   useEffect(() => {
     const fetchFeatured = async () => {
@@ -47,6 +52,8 @@ const Home = () => {
     }
   ];
 
+  const heroImage = heroSection.image_url || 'https://images.unsplash.com/photo-1668086682339-f14262879c18?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwxfHxhcnRpc2FuJTIwc2NlbnRlZCUyMGNhbmRsZSUyMGRhcmslMjBtb29kJTIwZ29sZHxlbnwwfHx8fDE3Njg5NDMzNDR8MA&ixlib=rb-4.1.0&q=85';
+
   return (
     <div className="min-h-screen" data-testid="home-page">
       {/* Hero Section */}
@@ -54,7 +61,7 @@ const Home = () => {
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1668086682339-f14262879c18?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwxfHxhcnRpc2FuJTIwc2NlbnRlZCUyMGNhbmRsZSUyMGRhcmslMjBtb29kJTIwZ29sZHxlbnwwfHx8fDE3Njg5NDMzNDR8MA&ixlib=rb-4.1.0&q=85"
+            src={heroImage}
             alt="Perennia Hero"
             className="w-full h-full object-cover"
           />
@@ -70,7 +77,7 @@ const Home = () => {
           >
             <span className="inline-flex items-center space-x-2 text-[#D4AF37] text-xs uppercase tracking-[0.3em] mb-6">
               <Sparkles size={14} />
-              <span>Handcrafted in Barbados</span>
+              <span>{heroSection.tagline || 'Handcrafted in Barbados'}</span>
               <Sparkles size={14} />
             </span>
           </motion.div>
@@ -81,8 +88,8 @@ const Home = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white leading-tight mb-8"
           >
-            Luxury Artisan<br />
-            <span className="text-[#D4AF37]">Gifts & Décor</span>
+            {heroSection.title || 'Luxury Artisan'}<br />
+            <span className="text-[#D4AF37]">{heroSection.subtitle || 'Gifts & Décor'}</span>
           </motion.h1>
 
           <motion.p
@@ -91,8 +98,7 @@ const Home = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-[#A3A3A3] text-base md:text-lg max-w-2xl mx-auto mb-10"
           >
-            Discover our collection of handcrafted resin art, natural body care, 
-            and artisan candles. Each piece crafted with love and Caribbean spirit.
+            {heroSection.description || 'Discover our collection of handcrafted resin art, natural body care, and artisan candles. Each piece crafted with love and Caribbean spirit.'}
           </motion.p>
 
           <motion.div
@@ -228,14 +234,10 @@ const Home = () => {
             >
               <span className="text-[#D4AF37] text-xs uppercase tracking-[0.3em] mb-6 block">Our Story</span>
               <h2 className="text-3xl md:text-4xl font-serif text-white mb-6 leading-tight">
-                Crafted with Love,<br />
-                Inspired by the Caribbean
+                {aboutSection.title || 'Crafted with Love, Inspired by the Caribbean'}
               </h2>
               <p className="text-[#A3A3A3] leading-relaxed mb-8">
-                Perennia was born from a passion for artistry and a deep love for Barbados. 
-                Each piece we create tells a story of Caribbean beauty—from the turquoise 
-                waters to the golden sunsets. We believe in sustainable craftsmanship and 
-                bringing luxury into everyday moments.
+                {aboutSection.content?.split('\n')[0] || 'Perennia was born from a passion for artistry and a deep love for Barbados. Each piece we create tells a story of Caribbean beauty—from the turquoise waters to the golden sunsets. We believe in sustainable craftsmanship and bringing luxury into everyday moments.'}
               </p>
               <Button asChild className="btn-secondary px-8 py-3">
                 <Link to="/about">Learn More</Link>
@@ -250,7 +252,7 @@ const Home = () => {
             >
               <div className="aspect-square bg-[#1A1A1A] overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1620567645328-99d8d4b6d4e5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODh8MHwxfHNlYXJjaHwzfHxsdXh1cnklMjBoYW5kbWFkZSUyMHNvYXAlMjBkYXJrJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3Njg5NDMzNDJ8MA&ixlib=rb-4.1.0&q=85"
+                  src={aboutSection.image_url || 'https://images.unsplash.com/photo-1620567645328-99d8d4b6d4e5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODh8MHwxfHNlYXJjaHwzfHxsdXh1cnklMjBoYW5kbWFkZSUyMHNvYXAlMjBkYXJrJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3Njg5NDMzNDJ8MA&ixlib=rb-4.1.0&q=85'}
                   alt="Perennia Craftsmanship"
                   className="w-full h-full object-cover"
                 />
