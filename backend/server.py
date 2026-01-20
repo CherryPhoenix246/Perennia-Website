@@ -697,7 +697,7 @@ async def get_site_settings():
             "id": "main",
             "business_name": "Perennia",
             "tagline": "Handcrafted Luxury from Barbados",
-            "logo_url": "https://customer-assets.emergentagent.com/job_8aaf14c8-9661-4336-8e9d-83cf935f1bb7/artifacts/f1ti0xuj_Screenshot_20260120_173740_Canva.jpg",
+            "logo_url": "/logo-transparent.png",
             "social_links": {
                 "instagram": "",
                 "facebook": "",
